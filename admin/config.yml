@@ -1,0 +1,24 @@
+backend:
+  name: git-gateway
+  branch: main # Asegúrate de que tu rama en GitHub sea 'main'
+
+media_folder: "assets/images/autos" # Donde se guardarán las fotos
+public_folder: "/assets/images/autos"
+
+collections:
+  - name: "autos"
+    label: "Inventario de Autos"
+    folder: "assets/data/autos" # Aquí se guardará cada carro como un archivo individual
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "ID Único (ej: toyota-hilux-2022)", name: "id", widget: "string" }
+      - { label: "Marca", name: "marca", widget: "string" }
+      - { label: "Modelo", name: "modelo", widget: "string" }
+      - { label: "Año", name: "año", widget: "number" }
+      - { label: "Precio", name: "precio", widget: "string", hint: "Ej: ₡15,500,000" }
+      - { label: "Kilometraje", name: "km", widget: "string" }
+      - { label: "Transmisión", name: "transmision", widget: "select", options: ["Manual", "Automática"] }
+      - { label: "Imagen Principal", name: "imagen", widget: "image" }
+      - { label: "Galería de Fotos", name: "galeria", widget: "list", field: { widget: "image" } }
+      - { label: "Descripción", name: "descripcion", widget: "text" }

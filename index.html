@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pura Vida Motor | Tu próximo vehículo está aquí</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .titulo-plateado {
+            background: linear-gradient(to bottom, #ffffff 0%, #a3a3a3 50%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));
+        }
+        .bg-carbono {
+            background-color: #1a1a1a;
+            background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre-big.png');
+        }
+    </style>
+</head>
+<body class="bg-black text-slate-300 font-sans">
+
+    <nav class="bg-[#111] shadow-2xl p-2 sticky top-0 z-50 border-b-2 border-slate-800">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <a href="index.html" class="flex items-center gap-4">
+                <img src="assets/logo.png" alt="Logo" class="h-16 md:h-24 w-auto">
+                <span class="text-2xl md:text-3xl font-black tracking-tighter uppercase italic titulo-plateado">PURA VIDA MOTOR</span>
+            </a>
+            
+            <a href="https://wa.me/50671162806" class="bg-[#ce1126] text-white px-8 py-3 rounded-xl font-bold hover:bg-white hover:text-black transition shadow-lg flex items-center gap-2 border-b-4 border-[#800b18]">
+                <i class="fab fa-whatsapp text-xl"></i> <span class="hidden md:inline italic uppercase">CONTACTAR</span>
+            </a>
+        </div>
+    </nav>
+
+    <section class="bg-carbono py-32 text-white relative border-b-8 border-slate-900">
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h2 class="text-5xl md:text-8xl font-black mb-4 uppercase italic tracking-tighter titulo-plateado">
+                TU PRÓXIMO VEHÍCULO <br> ESTÁ AQUÍ
+            </h2>
+            <p class="text-[#ce1126] text-xl md:text-2xl font-bold italic tracking-[0.2em] uppercase">
+                Calidad y Respaldo en Costa Rica
+            </p>
+        </div>
+    </section>
+
+    <section id="inventario" class="py-20 container mx-auto px-4">
+        <div class="flex flex-col items-center mb-16">
+            <h3 class="text-3xl font-black uppercase italic text-white tracking-widest border-l-8 border-[#ce1126] pl-4">
+                Inventario Disponible
+            </h3>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" id="lista-autos">
+            </div>
+    </section>
+
+    <footer class="bg-[#0a0a0a] text-slate-600 py-20 border-t-8 border-slate-900">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-col items-center gap-6 mb-10">
+                <img src="assets/logo.png" alt="Logo" class="h-28 opacity-80">
+                <span class="text-3xl font-black italic titulo-plateado">PURA VIDA MOTOR</span>
+            </div>
+            <p class="text-xs tracking-[0.5em] opacity-40 font-bold uppercase">&copy; 2026 PURA VIDA MOTOR - HIGH PERFORMANCE LINE</p>
+        </div>
+    </footer>
+
+    <script>
+        fetch('assets/autos.json')
+            .then(res => res.json())
+            .then(data => {
+                const contenedor = document.getElementById('lista-autos');
+                contenedor.innerHTML = ''; 
+                data.forEach(auto => {
+                    contenedor.innerHTML += `
+                        <div class="bg-[#111] rounded-3xl shadow-2xl overflow-hidden border-2 border-slate-800 group hover:border-[#ce1126] transition-all duration-500">
+                            <div class="relative overflow-hidden">
+                                <img src="${auto.imagen}" class="w-full h-72 object-cover grayscale-[30%] group-hover:grayscale-0 transition duration-700 group-hover:scale-105">
+                                <div class="absolute top-6 left-6 bg-[#ce1126] text-white px-4 py-1 rounded-md font-black italic shadow-lg border border-[#800b18] text-sm tracking-widest">${auto.año}</div>
+                            </div>
+                            <div class="p-10">
+                                <h4 class="text-3xl font-black text-white uppercase italic mb-2 tracking-tighter">${auto.marca} ${auto.modelo}</h4>
+                                <p class="text-[#a3a3a3] text-4xl font-black mb-8 italic tracking-tighter">${auto.precio}</p>
+                                
+                                <div class="flex justify-between text-xs font-black text-slate-500 mb-10 border-y py-6 border-slate-800 uppercase tracking-[0.2em]">
+                                    <span class="flex items-center gap-3"><i class="fas fa-road text-[#ce1126]"></i> ${auto.km}</span>
+                                    <span class="flex items-center gap-3"><i class="fas fa-cog text-[#ce1126]"></i> ${auto.transmision}</span>
+                                </div>
+                                
+                                <a href="auto.html?id=${auto.id}" class="block text-center bg-slate-800 text-white font-black py-5 rounded-2xl hover:bg-white hover:text-black transition shadow-xl uppercase italic text-lg border-b-8 border-slate-950">
+                                    Ver Especificaciones
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+    </script>
+</body>
+</html>
