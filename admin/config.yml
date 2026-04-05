@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: stewardsprofile-ux/puravidamotor-web # Asegúrate de que este sea el nombre de tu nuevo repo
+  repo: stewardsprofile-ux/puravidamotororiginal # Asegúrate de que este sea el nombre de tu nuevo repo
   branch: main
   base_url: https://decap-cms-proxy-bridge.vercel.app # Esto permite que funcione en Vercel
   auth_endpoint: api/auth
