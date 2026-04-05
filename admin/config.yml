@@ -1,9 +1,10 @@
 backend:
   name: github
-  repo: stewardsprofile-ux/puravidamotororiginal # Asegúrate de que este sea el nombre de tu nuevo repo
+  repo: stewardsprofile-ux/puravidamotororiginal
   branch: main
-  base_url: https://decap-cms-proxy-bridge.vercel.app # Esto permite que funcione en Vercel
+  base_url: https://decap-cms-proxy-bridge.vercel.app
   auth_endpoint: api/auth
+  site_id: puravidamotororiginal.vercel.app
 
 media_folder: "assets/images/autos"
 public_folder: "/assets/images/autos"
@@ -14,7 +15,7 @@ collections:
     folder: "assets/data/autos"
     create: true
     slug: "{{slug}}"
-    format: "json" # Importante para que el buscador de tu web lo lea fácil
+    format: "json"
     fields:
       - { label: "ID Único", name: "id", widget: "string" }
       - { label: "Marca", name: "marca", widget: "string" }
