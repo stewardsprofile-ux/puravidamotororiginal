@@ -2,8 +2,6 @@ backend:
   name: github
   repo: stewardsprofile-ux/puravidamotororiginal
   branch: main
-  base_url: https://puravidamotororiginal.vercel.app # Tu propia URL
-  auth_endpoint: api/auth
 
 media_folder: "assets/images/autos"
 public_folder: "/assets/images/autos"
