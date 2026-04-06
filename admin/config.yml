@@ -1,8 +1,9 @@
 backend:
+backend:
   name: github
   repo: stewardsprofile-ux/puravidamotororiginal
   branch: main
-  base_url: https://github-os-auth.vercel.app
+  base_url: https://decap-cms-proxy.vercel.app # Este es un proxy público activo
   auth_endpoint: api/auth
 
 media_folder: "assets/images/autos"
