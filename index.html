@@ -92,37 +92,41 @@
                 contenedor.innerHTML = ''; 
 
                 autos.forEach(auto => {
-                    // Mapeo según los nombres exactos de tu config.yml
                     const marca = auto.marca || 'Vehículo';
                     const modelo = auto.modelo || '';
-                    const precio = auto.precio || 'Consultar';
                     const anio = auto.año || '2026';
-                    const km = auto.km || 'N/A';
+                    const km = auto.km || '0 KM';
                     const transmision = auto.transmision || 'Manual';
+                    const combustible = auto.combustible || 'Gasolina';
+                    const traccion = auto.traccion || '4x2';
                     const imagen = auto.imagen || 'assets/logo.png';
-                    const descripcion = auto.descripcion ? (auto.descripcion.substring(0, 100) + '...') : 'Click para ver más detalles.';
-                    
-                    // Usamos el ID del JSON para el enlace a auto.html
                     const idAuto = auto.id || 'detalle';
                     
+                    // Formatear precio a Moneda de Costa Rica (₡8.900.000)
+                    const precioFormateado = new Intl.NumberFormat('es-CR', {
+                        style: 'currency',
+                        currency: 'CRC',
+                        minimumFractionDigits: 0
+                    }).format(auto.precio || 0);
+
                     contenedor.innerHTML += `
                         <div class="bg-[#111] rounded-3xl shadow-2xl overflow-hidden border-2 border-slate-800 group hover:border-[#ce1126] transition-all duration-500 flex flex-col h-full">
                             <div class="relative overflow-hidden">
                                 <img src="${imagen}" class="w-full h-72 object-cover grayscale-[30%] group-hover:grayscale-0 transition duration-700 group-hover:scale-105" alt="${marca}">
                                 <div class="absolute top-6 left-6 bg-[#ce1126] text-white px-4 py-1 rounded-md font-black italic shadow-lg text-sm tracking-widest">${anio}</div>
                             </div>
-                            <div class="p-10 flex flex-col flex-grow">
-                                <h4 class="text-3xl font-black text-white uppercase italic mb-2 tracking-tighter">${marca} ${modelo}</h4>
-                                <p class="text-[#a3a3a3] text-4xl font-black mb-6 italic tracking-tighter">${precio}</p>
+                            <div class="p-8 flex flex-col flex-grow">
+                                <h4 class="text-2xl font-black text-white uppercase italic mb-1 tracking-tighter">${marca} ${modelo}</h4>
+                                <p class="text-[#ce1126] text-3xl font-black mb-6 italic tracking-tighter">${precioFormateado}</p>
                                 
-                                <p class="text-slate-400 text-sm mb-6 flex-grow italic line-clamp-3">${descripcion}</p>
-                                
-                                <div class="flex justify-between text-xs font-black text-slate-500 mb-8 border-y py-6 border-slate-800 uppercase tracking-[0.2em]">
-                                    <span class="flex items-center gap-3"><i class="fas fa-road text-[#ce1126]"></i> ${km}</span>
-                                    <span class="flex items-center gap-3"><i class="fas fa-cog text-[#ce1126]"></i> ${transmision}</span>
+                                <div class="grid grid-cols-2 gap-4 text-[10px] font-black text-slate-400 mb-8 uppercase tracking-widest border-t border-slate-800 pt-6">
+                                    <span class="flex items-center gap-2"><i class="fas fa-road text-[#ce1126]"></i> ${km}</span>
+                                    <span class="flex items-center gap-2"><i class="fas fa-cog text-[#ce1126]"></i> ${transmision}</span>
+                                    <span class="flex items-center gap-2"><i class="fas fa-gas-pump text-[#ce1126]"></i> ${combustible}</span>
+                                    <span class="flex items-center gap-2"><i class="fas fa-truck-monster text-[#ce1126]"></i> ${traccion}</span>
                                 </div>
                                 
-                                <a href="auto.html?id=${idAuto}" class="block text-center bg-slate-800 text-white font-black py-5 rounded-2xl hover:bg-white hover:text-black transition shadow-xl uppercase italic text-lg border-b-8 border-slate-950">
+                                <a href="auto.html?id=${idAuto}" class="block text-center bg-white text-black font-black py-4 rounded-xl hover:bg-[#ce1126] hover:text-white transition shadow-xl uppercase italic text-sm border-b-4 border-slate-300 hover:border-[#800b18]">
                                     Ver Especificaciones
                                 </a>
                             </div>
