@@ -1,22 +1,3 @@
 [
-  {
-    "id": "toyota-hilux-2022",
-    "marca": "Toyota",
-    "modelo": "Hilux",
-    "año": 2022,
-    "precio": "₡24,500,000",
-    "imagen": "images/hilux.jpg",
-    "descripcion": "4x4, motor 2.8 Turbo Diesel, impecable.",
-    "galeria": ["images/hilux-int.jpg", "images/hilux-tras.jpg"]
-  },
-  {
-    "id": "suzuki-jimny-2023",
-    "marca": "Suzuki",
-    "modelo": "Jimny",
-    "año": 2023,
-    "precio": "₡15,900,000",
-    "imagen": "images/jimny.jpg",
-    "descripcion": "Manual, color verde selva, extras de montaña.",
-    "galeria": []
-  }
+
 ]
