@@ -2,7 +2,8 @@ backend:
   name: github
   repo: stewardsprofile-ux/puravidamotororiginal
   branch: main
-  base_url: https://decap-cms-proxy.vercel.app
+  # AQUÍ ESTÁ EL CAMBIO: Usamos TU propia URL de Vercel (la que está en verde)
+  base_url: https://decap-cms-vercel-stewardsprofile-uxs-projects.vercel.app
   auth_endpoint: api/auth
 
 media_folder: "assets/images/autos"
