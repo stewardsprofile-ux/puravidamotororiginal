@@ -20,16 +20,17 @@
 </head>
 <body class="bg-black text-slate-300 font-sans">
 
-    <nav class="bg-[#111] shadow-2xl p-4 border-b border-slate-800">
+    <nav class="bg-[#111] shadow-2xl p-4 border-b border-slate-800 sticky top-0 z-50">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-3">
-                <i class="fas fa-arrow-left text-[#ce1126]"></i>
-                <span class="text-xl font-black italic titulo-plateado uppercase">VOLVER AL INVENTARIO</span>
+            <a href="index.html" class="group flex items-center gap-3 bg-slate-900/50 hover:bg-[#ce1126] px-4 py-2 rounded-xl transition-all duration-300 border border-slate-800">
+                <i class="fas fa-chevron-left text-[#ce1126] group-hover:text-white"></i>
+                <span class="text-sm font-black italic text-white uppercase tracking-tighter">Regresar al Inventario</span>
             </a>
+            <img src="assets/logo.png" alt="Logo" class="h-10 hidden md:block">
         </div>
     </nav>
 
-    <main class="container mx-auto px-4 py-12">
+    <main class="container mx-auto px-4 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             
             <div class="space-y-6">
@@ -44,39 +45,36 @@
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
-                
-                <div id="thumbnails" class="grid grid-cols-4 gap-4">
-                    </div>
             </div>
 
             <div class="flex flex-col justify-center">
-                <h1 id="auto-titulo" class="text-5xl md:text-6xl font-black text-white uppercase italic mb-2 tracking-tighter">Cargando...</h1>
+                <h1 id="auto-titulo" class="text-5xl font-black text-white uppercase italic mb-2 tracking-tighter">Cargando...</h1>
                 <p id="auto-precio" class="text-[#ce1126] text-4xl font-black mb-8 italic tracking-tighter border-b border-slate-800 pb-6"></p>
 
-                <div class="grid grid-cols-2 gap-6 mb-10">
+                <div class="grid grid-cols-2 gap-4 mb-10">
                     <div class="bg-[#111] p-4 rounded-2xl border border-slate-800 flex items-center gap-4">
-                        <i class="fas fa-road text-[#ce1126] text-xl"></i>
+                        <i class="fas fa-road text-[#ce1126]"></i>
                         <div>
                             <p class="text-[10px] uppercase font-bold text-slate-500">Recorrido</p>
                             <p id="auto-km" class="font-black text-white italic">---</p>
                         </div>
                     </div>
                     <div class="bg-[#111] p-4 rounded-2xl border border-slate-800 flex items-center gap-4">
-                        <i class="fas fa-cog text-[#ce1126] text-xl"></i>
+                        <i class="fas fa-cog text-[#ce1126]"></i>
                         <div>
                             <p class="text-[10px] uppercase font-bold text-slate-500">Transmisión</p>
                             <p id="auto-transmision" class="font-black text-white italic">---</p>
                         </div>
                     </div>
                     <div class="bg-[#111] p-4 rounded-2xl border border-slate-800 flex items-center gap-4">
-                        <i class="fas fa-gas-pump text-[#ce1126] text-xl"></i>
+                        <i class="fas fa-gas-pump text-[#ce1126]"></i>
                         <div>
                             <p class="text-[10px] uppercase font-bold text-slate-500">Combustible</p>
                             <p id="auto-combustible" class="font-black text-white italic">---</p>
                         </div>
                     </div>
                     <div class="bg-[#111] p-4 rounded-2xl border border-slate-800 flex items-center gap-4">
-                        <i class="fas fa-truck-monster text-[#ce1126] text-xl"></i>
+                        <i class="fas fa-truck-monster text-[#ce1126]"></i>
                         <div>
                             <p class="text-[10px] uppercase font-bold text-slate-500">Tracción</p>
                             <p id="auto-traccion" class="font-black text-white italic">---</p>
@@ -85,12 +83,12 @@
                 </div>
 
                 <div class="mb-10">
-                    <h3 class="text-[#ce1126] font-black uppercase italic tracking-widest text-sm mb-4">Descripción del Asesor</h3>
-                    <p id="auto-descripcion" class="text-slate-400 leading-relaxed whitespace-pre-line bg-[#050505] p-6 rounded-2xl border border-slate-900"></p>
+                    <h3 class="text-[#ce1126] font-black uppercase italic text-sm mb-4">Descripción del Asesor</h3>
+                    <p id="auto-descripcion" class="text-slate-400 leading-relaxed whitespace-pre-line bg-[#080808] p-6 rounded-2xl border border-slate-900"></p>
                 </div>
 
-                <a id="btn-whatsapp" href="#" target="_blank" class="block text-center bg-[#ce1126] text-white font-black py-6 rounded-2xl hover:bg-white hover:text-black transition shadow-2xl uppercase italic text-xl border-b-8 border-[#800b18]">
-                    <i class="fab fa-whatsapp mr-2"></i> COMPRAR AHORA
+                <a id="btn-whatsapp" href="#" target="_blank" class="block text-center bg-[#ce1126] text-white font-black py-5 rounded-2xl hover:bg-white hover:text-black transition-all shadow-2xl uppercase italic text-xl border-b-8 border-[#800b18] active:border-b-0 active:translate-y-1">
+                    <i class="fab fa-whatsapp mr-2"></i> CONSULTAR POR WHATSAPP
                 </a>
             </div>
         </div>
@@ -98,6 +96,7 @@
 
     <script>
         const params = new URLSearchParams(window.location.search);
+        // Usamos decodeURIComponent para manejar los espacios y caracteres especiales del ID en la URL
         const autoId = params.get('id');
         let currentSlide = 0;
         let totalSlides = 0;
@@ -105,60 +104,75 @@
         async function cargarDetalle() {
             if (!autoId) { window.location.href = 'index.html'; return; }
 
-            const USER = 'stewardsprofile-ux';
+            // IMPORTANTE: Verifica que estos datos coincidan con tu repo de GitHub
+            const USER = 'stewardsprofile-ux'; 
             const REPO = 'puravidamotororiginal';
             const FOLDER = 'assets/data/autos';
 
             try {
-                const response = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FOLDER}/${autoId}.json?t=${new Date().getTime()}`);
-                const auto = await response.json();
-                const data = JSON.parse(atob(auto.content));
+                // Intentamos cargar el JSON directamente
+                const url = `https://raw.githubusercontent.com/${USER}/${REPO}/main/${FOLDER}/${autoId}.json`;
+                const response = await fetch(url);
+                
+                if (!response.ok) throw new Error("Archivo no encontrado");
+                
+                const data = await response.json();
 
-                // Poblar Textos
-                document.getElementById('auto-titulo').innerText = `${data.marca} ${data.modelo}`;
-                document.getElementById('auto-descripcion').innerText = data.descripcion || "Sin descripción disponible.";
-                document.getElementById('auto-km').innerText = data.km || "0 KM";
-                document.getElementById('auto-transmision').innerText = data.transmision || "N/A";
-                document.getElementById('auto-combustible').innerText = data.combustible || "Gasolina";
-                document.getElementById('auto-traccion').innerText = data.traccion || "4x2";
-
-                // Precio Formateado
+                // Llenar datos básicos (Evitando undefined)
+                document.getElementById('auto-titulo').innerText = `${data.marca || ''} ${data.modelo || ''}`;
                 document.getElementById('auto-precio').innerText = new Intl.NumberFormat('es-CR', {
                     style: 'currency', currency: 'CRC', minimumFractionDigits: 0
                 }).format(data.precio || 0);
+                
+                document.getElementById('auto-km').innerText = data.km || "Consultar";
+                document.getElementById('auto-transmision').innerText = data.transmision || "N/A";
+                document.getElementById('auto-combustible').innerText = data.combustible || "N/A";
+                document.getElementById('auto-traccion').innerText = data.traccion || "N/A";
+                document.getElementById('auto-descripcion').innerText = data.descripcion || "Sin detalles adicionales.";
 
-                // Configurar Imágenes (Carrusel)
-                const imagenes = [];
-                if (data.imagen) imagenes.push(data.imagen);
-                if (data.imagenes_adicionales) {
-                    const extras = Array.isArray(data.imagenes_adicionales) ? data.imagenes_adicionales : [data.imagenes_adicionales];
-                    imagenes.push(...extras);
+                // Configurar Carrusel de Imágenes
+                const carouselContainer = document.getElementById('carousel-images');
+                let htmlImagenes = '';
+                
+                // Imagen principal
+                if (data.imagen) {
+                    htmlImagenes += `<img src="${data.imagen}" class="carousel-slide active" alt="Foto principal">`;
                 }
 
-                const carouselContainer = document.getElementById('carousel-images');
-                totalSlides = imagenes.length;
-                
-                imagenes.forEach((img, index) => {
-                    carouselContainer.innerHTML += `<img src="${img}" class="carousel-slide ${index === 0 ? 'active' : ''}" alt="Imagen ${index}">`;
-                });
+                // Imágenes adicionales (Decap CMS suele guardarlas en un array)
+                if (data.imagenes_adicionales && Array.isArray(data.imagenes_adicionales)) {
+                    data.imagenes_adicionales.forEach(img => {
+                        htmlImagenes += `<img src="${img}" class="carousel-slide" alt="Foto adicional">`;
+                    });
+                }
 
-                // Configurar WhatsApp con Link
-                const currentUrl = window.location.href;
-                const mensaje = `¡Hola! Pura Vida Motor, me interesa este vehículo: ${data.marca} ${data.modelo}. Aquí puedes verlo: ${currentUrl}`;
-                document.getElementById('btn-whatsapp').href = `https://wa.me/50671162806?text=${encodeURIComponent(mensaje)}`;
+                carouselContainer.innerHTML = htmlImagenes;
+                totalSlides = document.querySelectorAll('.carousel-slide').length;
+
+                // Configurar WhatsApp
+                const linkActual = window.location.href;
+                const msj = `Hola Pura Vida Motor, me interesa el ${data.marca} ${data.modelo}. Más info aquí: ${linkActual}`;
+                document.getElementById('btn-whatsapp').href = `https://wa.me/50671162806?text=${encodeURIComponent(msj)}`;
 
             } catch (error) {
-                console.error("Error:", error);
-                alert("No se pudo cargar la información del vehículo.");
+                console.error("Error cargando inventario:", error);
+                document.querySelector('main').innerHTML = `
+                    <div class="text-center py-20">
+                        <i class="fas fa-exclamation-triangle text-[#ce1126] text-6xl mb-4"></i>
+                        <h2 class="text-2xl font-bold text-white">No pudimos encontrar este vehículo</h2>
+                        <p class="text-slate-500 mb-8">Es posible que el enlace haya expirado o el auto ya no esté disponible.</p>
+                        <a href="index.html" class="bg-[#ce1126] text-white px-8 py-3 rounded-xl font-bold italic">VOLVER AL INVENTARIO</a>
+                    </div>
+                `;
             }
         }
 
         function changeSlide(direction) {
             const slides = document.querySelectorAll('.carousel-slide');
+            if (slides.length <= 1) return;
+
             slides[currentSlide].classList.remove('active');
-            
             currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-            
             slides[currentSlide].classList.add('active');
         }
 
