@@ -17,6 +17,18 @@
             background-color: #1a1a1a;
             background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre-big.png');
         }
+        /* Estilos para el carrusel de testimonios */
+        .testimonial-slide {
+            display: none;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        .testimonial-slide.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="bg-black text-slate-300 font-sans">
@@ -27,9 +39,15 @@
                 <img src="assets/logo.png" alt="Logo" class="h-16 md:h-24 w-auto">
                 <span class="text-2xl md:text-3xl font-black tracking-tighter uppercase italic titulo-plateado">PURA VIDA MOTOR</span>
             </a>
-            <a href="https://wa.me/50671162806" class="bg-[#ce1126] text-white px-8 py-3 rounded-xl font-bold hover:bg-white hover:text-black transition shadow-lg flex items-center gap-2 border-b-4 border-[#800b18]">
-                <i class="fab fa-whatsapp text-xl"></i> <span class="hidden md:inline italic uppercase">CONTACTAR</span>
-            </a>
+            
+            <div class="flex items-center gap-4 md:gap-8">
+                <a href="#testimonios" class="hidden md:block text-white font-bold italic uppercase hover:text-[#ce1126] transition text-sm tracking-widest">
+                    Testimonios
+                </a>
+                <a href="https://wa.me/50671162806" class="bg-[#ce1126] text-white px-8 py-3 rounded-xl font-bold hover:bg-white hover:text-black transition shadow-lg flex items-center gap-2 border-b-4 border-[#800b18]">
+                    <i class="fab fa-whatsapp text-xl"></i> <span class="hidden md:inline italic uppercase">CONTACTAR</span>
+                </a>
+            </div>
         </div>
     </nav>
 
@@ -57,6 +75,44 @@
         </div>
     </section>
 
+    <section id="testimonios" class="bg-[#080808] py-24 border-y border-slate-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h3 class="text-[#ce1126] font-black uppercase italic tracking-widest text-sm mb-4">Experiencias Pura Vida</h3>
+                <div class="relative h-64 flex items-center justify-center">
+                    
+                    <div class="testimonial-slide active">
+                        <i class="fas fa-quote-left text-4xl text-slate-800 mb-6"></i>
+                        <p class="text-xl md:text-2xl italic font-medium text-white mb-8">"Excelente servicio y asesoría. Mi vehículo está en perfectas condiciones, tal como lo vi en la página. Muy recomendados."</p>
+                        <h4 class="text-[#ce1126] font-black uppercase italic tracking-tighter text-lg">Warner S.</h4>
+                        <div class="flex justify-center gap-1 mt-2 text-yellow-500 text-xs">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-slide">
+                        <i class="fas fa-quote-left text-4xl text-slate-800 mb-6"></i>
+                        <p class="text-xl md:text-2xl italic font-medium text-white mb-8">"La transparencia en la venta es lo que más valoro. El proceso fue rápido y muy profesional. ¡Pura Vida Motor!"</p>
+                        <h4 class="text-[#ce1126] font-black uppercase italic tracking-tighter text-lg">Andrés M.</h4>
+                        <div class="flex justify-center gap-1 mt-2 text-yellow-500 text-xs">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-slide">
+                        <i class="fas fa-quote-left text-4xl text-slate-800 mb-6"></i>
+                        <p class="text-xl md:text-2xl italic font-medium text-white mb-8">"Compré mi primer auto con ellos y la experiencia fue de 10. Te guían en todo el proceso de traspaso."</p>
+                        <h4 class="text-[#ce1126] font-black uppercase italic tracking-tighter text-lg">Karla R.</h4>
+                        <div class="flex justify-center gap-1 mt-2 text-yellow-500 text-xs">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="bg-[#0a0a0a] text-slate-600 py-20 border-t-8 border-slate-900">
         <div class="container mx-auto px-4 text-center">
             <div class="flex flex-col items-center gap-6 mb-10">
@@ -71,6 +127,18 @@
         const USER = 'stewardsprofile-ux'; 
         const REPO = 'puravidamotororiginal'; 
         const FOLDER = 'assets/data/autos'; 
+
+        // LÓGICA DEL CARRUSEL DE TESTIMONIOS
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.testimonial-slide');
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        setInterval(nextSlide, 5000); // Cambia cada 5 segundos
 
         async function cargarInventario() {
             const contenedor = document.getElementById('lista-autos');
