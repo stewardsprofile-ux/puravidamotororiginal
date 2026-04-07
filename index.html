@@ -79,35 +79,8 @@
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto text-center">
                 <h3 class="text-[#ce1126] font-black uppercase italic tracking-widest text-sm mb-4">Experiencias Pura Vida</h3>
-                <div class="relative h-64 flex items-center justify-center">
-                    
-                    <div class="testimonial-slide active">
-                        <i class="fas fa-quote-left text-4xl text-slate-800 mb-6"></i>
-                        <p class="text-xl md:text-2xl italic font-medium text-white mb-8">"Excelente servicio y asesoría. Mi vehículo está en perfectas condiciones, tal como lo vi en la página. Muy recomendados."</p>
-                        <h4 class="text-[#ce1126] font-black uppercase italic tracking-tighter text-lg">Warner S.</h4>
-                        <div class="flex justify-center gap-1 mt-2 text-yellow-500 text-xs">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                    </div>
-
-                    <div class="testimonial-slide">
-                        <i class="fas fa-quote-left text-4xl text-slate-800 mb-6"></i>
-                        <p class="text-xl md:text-2xl italic font-medium text-white mb-8">"La transparencia en la venta es lo que más valoro. El proceso fue rápido y muy profesional. ¡Pura Vida Motor!"</p>
-                        <h4 class="text-[#ce1126] font-black uppercase italic tracking-tighter text-lg">Andrés M.</h4>
-                        <div class="flex justify-center gap-1 mt-2 text-yellow-500 text-xs">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                    </div>
-
-                    <div class="testimonial-slide">
-                        <i class="fas fa-quote-left text-4xl text-slate-800 mb-6"></i>
-                        <p class="text-xl md:text-2xl italic font-medium text-white mb-8">"Compré mi primer auto con ellos y la experiencia fue de 10. Te guían en todo el proceso de traspaso."</p>
-                        <h4 class="text-[#ce1126] font-black uppercase italic tracking-tighter text-lg">Karla R.</h4>
-                        <div class="flex justify-center gap-1 mt-2 text-yellow-500 text-xs">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                    </div>
-
+                <div id="testimonios-container" class="relative min-h-[350px] flex items-center justify-center">
+                    <p class="text-slate-500 animate-pulse italic">Cargando reseñas de clientes...</p>
                 </div>
             </div>
         </div>
@@ -126,26 +99,73 @@
     <script>
         const USER = 'stewardsprofile-ux'; 
         const REPO = 'puravidamotororiginal'; 
-        const FOLDER = 'assets/data/autos'; 
+        const FOLDER_AUTOS = 'assets/data/autos';
+        const FOLDER_TESTIMONIOS = 'assets/data/testimonios';
 
-        // LÓGICA DEL CARRUSEL DE TESTIMONIOS
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.testimonial-slide');
-
-        function nextSlide() {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }
-
-        setInterval(nextSlide, 5000); // Cambia cada 5 segundos
-
-        async function cargarInventario() {
-            const contenedor = document.getElementById('lista-autos');
-            
+        // --- CARGAR TESTIMONIOS ---
+        async function cargarTestimonios() {
+            const contenedor = document.getElementById('testimonios-container');
             try {
                 const t = new Date().getTime();
-                const response = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FOLDER}?t=${t}`);
+                const response = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FOLDER_TESTIMONIOS}?t=${t}`);
+                const files = await response.json();
+
+                if (!Array.isArray(files) || files.length === 0) {
+                    contenedor.innerHTML = '<p class="text-slate-600 italic">No hay testimonios aún.</p>';
+                    return;
+                }
+
+                const jsonFiles = files.filter(file => file.name.endsWith('.json'));
+                const promesas = jsonFiles.map(file => fetch(`${file.download_url}?t=${t}`).then(res => res.json()));
+                const testimonios = await Promise.all(promesas);
+
+                contenedor.innerHTML = ''; 
+
+                testimonios.forEach((test, index) => {
+                    const estrellasNum = parseInt(test.estrellas) || 5;
+                    const estrellasHtml = '<i class="fas fa-star"></i>'.repeat(estrellasNum);
+                    
+                    contenedor.innerHTML += `
+                        <div class="testimonial-slide w-full ${index === 0 ? 'active' : ''}">
+                            <div class="flex justify-center mb-6">
+                                <img src="${test.foto || 'assets/logo.png'}" class="w-24 h-24 rounded-full object-cover border-4 border-[#ce1126] shadow-2xl bg-black">
+                            </div>
+                            <i class="fas fa-quote-left text-4xl text-slate-800 mb-6"></i>
+                            <p class="text-xl md:text-2xl italic font-medium text-white mb-8 px-4">"${test.comentario}"</p>
+                            <h4 class="text-[#ce1126] font-black uppercase italic tracking-tighter text-lg">${test.nombre}</h4>
+                            <div class="flex justify-center gap-1 mt-2 text-yellow-500 text-xs">
+                                ${estrellasHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                iniciarCarrusel();
+
+            } catch (error) {
+                console.error("Error Testimonios:", error);
+                contenedor.innerHTML = '';
+            }
+        }
+
+        function iniciarCarrusel() {
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.testimonial-slide');
+            if (slides.length <= 1) return;
+
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 5000);
+        }
+
+        // --- CARGAR INVENTARIO ---
+        async function cargarInventario() {
+            const contenedor = document.getElementById('lista-autos');
+            try {
+                const t = new Date().getTime();
+                const response = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FOLDER_AUTOS}?t=${t}`);
                 const files = await response.json();
 
                 if (!Array.isArray(files) || files.length === 0) {
@@ -160,54 +180,41 @@
                 contenedor.innerHTML = ''; 
 
                 autos.forEach(auto => {
-                    const marca = auto.marca || 'Vehículo';
-                    const modelo = auto.modelo || '';
-                    const anio = auto.año || '2026';
-                    const km = auto.km || '0 KM';
-                    const transmision = auto.transmision || 'Manual';
-                    const combustible = auto.combustible || 'Gasolina';
-                    const traccion = auto.traccion || '4x2';
-                    const imagen = auto.imagen || 'assets/logo.png';
-                    const idAuto = auto.id || 'detalle';
-                    
                     const precioFormateado = new Intl.NumberFormat('es-CR', {
-                        style: 'currency',
-                        currency: 'CRC',
-                        minimumFractionDigits: 0
+                        style: 'currency', currency: 'CRC', minimumFractionDigits: 0
                     }).format(auto.precio || 0);
 
                     contenedor.innerHTML += `
                         <div class="bg-[#111] rounded-3xl shadow-2xl overflow-hidden border-2 border-slate-800 group hover:border-[#ce1126] transition-all duration-500 flex flex-col h-full">
                             <div class="relative overflow-hidden">
-                                <img src="${imagen}" class="w-full h-72 object-cover grayscale-[30%] group-hover:grayscale-0 transition duration-700 group-hover:scale-105" alt="${marca}">
-                                <div class="absolute top-6 left-6 bg-[#ce1126] text-white px-4 py-1 rounded-md font-black italic shadow-lg text-sm tracking-widest">${anio}</div>
+                                <img src="${auto.imagen || 'assets/logo.png'}" class="w-full h-72 object-cover grayscale-[30%] group-hover:grayscale-0 transition duration-700 group-hover:scale-105" alt="${auto.marca}">
+                                <div class="absolute top-6 left-6 bg-[#ce1126] text-white px-4 py-1 rounded-md font-black italic shadow-lg text-sm tracking-widest">${auto.año || '2026'}</div>
                             </div>
                             <div class="p-8 flex flex-col flex-grow">
-                                <h4 class="text-2xl font-black text-white uppercase italic mb-1 tracking-tighter">${marca} ${modelo}</h4>
+                                <h4 class="text-2xl font-black text-white uppercase italic mb-1 tracking-tighter">${auto.marca} ${auto.modelo}</h4>
                                 <p class="text-[#ce1126] text-3xl font-black mb-6 italic tracking-tighter">${precioFormateado}</p>
-                                
                                 <div class="grid grid-cols-2 gap-4 text-[10px] font-black text-slate-400 mb-8 uppercase tracking-widest border-t border-slate-800 pt-6">
-                                    <span class="flex items-center gap-2"><i class="fas fa-road text-[#ce1126]"></i> ${km}</span>
-                                    <span class="flex items-center gap-2"><i class="fas fa-cog text-[#ce1126]"></i> ${transmision}</span>
-                                    <span class="flex items-center gap-2"><i class="fas fa-gas-pump text-[#ce1126]"></i> ${combustible}</span>
-                                    <span class="flex items-center gap-2"><i class="fas fa-truck-monster text-[#ce1126]"></i> ${traccion}</span>
+                                    <span class="flex items-center gap-2"><i class="fas fa-road text-[#ce1126]"></i> ${auto.km || '0 KM'}</span>
+                                    <span class="flex items-center gap-2"><i class="fas fa-cog text-[#ce1126]"></i> ${auto.transmision || 'Manual'}</span>
+                                    <span class="flex items-center gap-2"><i class="fas fa-gas-pump text-[#ce1126]"></i> ${auto.combustible || 'Gasolina'}</span>
+                                    <span class="flex items-center gap-2"><i class="fas fa-truck-monster text-[#ce1126]"></i> ${auto.traccion || '4x2'}</span>
                                 </div>
-                                
-                                <a href="auto.html?id=${idAuto}" class="block text-center bg-white text-black font-black py-4 rounded-xl hover:bg-[#ce1126] hover:text-white transition shadow-xl uppercase italic text-sm border-b-4 border-slate-300 hover:border-[#800b18]">
+                                <a href="auto.html?id=${auto.id || 'detalle'}" class="block text-center bg-white text-black font-black py-4 rounded-xl hover:bg-[#ce1126] hover:text-white transition shadow-xl uppercase italic text-sm border-b-4 border-slate-300 hover:border-[#800b18]">
                                     Ver Especificaciones
                                 </a>
                             </div>
                         </div>
                     `;
                 });
-
             } catch (error) {
-                console.error("Error:", error);
+                console.error("Error Autos:", error);
                 contenedor.innerHTML = '<p class="text-center col-span-3">Error al cargar el catálogo.</p>';
             }
         }
 
+        // Inicializar cargas
         cargarInventario();
+        cargarTestimonios();
     </script>
 </body>
 </html>
