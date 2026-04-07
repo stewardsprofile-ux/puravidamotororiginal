@@ -35,13 +35,11 @@ collections:
           - { label: "Foto Extra", name: "foto", widget: "image" }
 
   - name: "testimonios"
-    label: "Testimonios de Clientes"
+    label: "Entregas a Clientes"
     folder: "assets/data/testimonios"
     create: true
     slug: "{{slug}}"
     format: "json"
     fields:
-      - { label: "Nombre del Cliente", name: "nombre", widget: "string" }
-      - { label: "Foto del Cliente", name: "foto", widget: "image" }
-      - { label: "Reseña / Comentario", name: "comentario", widget: "text" }
-      - { label: "Calificación", name: "estrellas", widget: "select", options: ["1", "2", "3", "4", "5"], default: "5" }
+      - { label: "Vehículo Entregado (Ej: Tucson 2014)", name: "nombre", widget: "string" }
+      - { label: "Foto de la Entrega", name: "foto", widget: "image" }
