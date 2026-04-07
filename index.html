@@ -17,7 +17,6 @@
             background-color: #1a1a1a;
             background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre-big.png');
         }
-        /* Estilos para el carrusel de testimonios */
         .testimonial-slide {
             display: none;
             animation: fadeIn 0.8s ease-in-out;
@@ -26,8 +25,8 @@
             display: block;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
@@ -42,7 +41,7 @@
             
             <div class="flex items-center gap-4 md:gap-8">
                 <a href="#testimonios" class="hidden md:block text-white font-bold italic uppercase hover:text-[#ce1126] transition text-sm tracking-widest">
-                    Testimonios
+                    Clientes Satisfechos
                 </a>
                 <a href="https://wa.me/50671162806" class="bg-[#ce1126] text-white px-8 py-3 rounded-xl font-bold hover:bg-white hover:text-black transition shadow-lg flex items-center gap-2 border-b-4 border-[#800b18]">
                     <i class="fab fa-whatsapp text-xl"></i> <span class="hidden md:inline italic uppercase">CONTACTAR</span>
@@ -77,10 +76,12 @@
 
     <section id="testimonios" class="bg-[#080808] py-24 border-y border-slate-900">
         <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto text-center">
-                <h3 class="text-[#ce1126] font-black uppercase italic tracking-widest text-sm mb-4">Experiencias Pura Vida</h3>
-                <div id="testimonios-container" class="relative min-h-[350px] flex items-center justify-center">
-                    <p class="text-slate-500 animate-pulse italic">Cargando reseñas de clientes...</p>
+            <div class="max-w-5xl mx-auto text-center">
+                <h3 class="text-3xl md:text-5xl font-black uppercase italic text-white tracking-tighter mb-12 titulo-plateado">
+                    CLIENTES SATISFECHOS
+                </h3>
+                <div id="testimonios-container" class="relative min-h-[400px] md:min-h-[600px] flex items-center justify-center">
+                    <p class="text-slate-500 animate-pulse italic">Cargando nuestras entregas...</p>
                 </div>
             </div>
         </div>
@@ -102,7 +103,6 @@
         const FOLDER_AUTOS = 'assets/data/autos';
         const FOLDER_TESTIMONIOS = 'assets/data/testimonios';
 
-        // --- CARGAR TESTIMONIOS ---
         async function cargarTestimonios() {
             const contenedor = document.getElementById('testimonios-container');
             try {
@@ -111,7 +111,7 @@
                 const files = await response.json();
 
                 if (!Array.isArray(files) || files.length === 0) {
-                    contenedor.innerHTML = '<p class="text-slate-600 italic">No hay testimonios aún.</p>';
+                    contenedor.innerHTML = '<p class="text-slate-600 italic">Próximamente más entregas.</p>';
                     return;
                 }
 
@@ -122,19 +122,17 @@
                 contenedor.innerHTML = ''; 
 
                 testimonios.forEach((test, index) => {
-                    const estrellasNum = parseInt(test.estrellas) || 5;
-                    const estrellasHtml = '<i class="fas fa-star"></i>'.repeat(estrellasNum);
-                    
                     contenedor.innerHTML += `
                         <div class="testimonial-slide w-full ${index === 0 ? 'active' : ''}">
-                            <div class="flex justify-center mb-6">
-                                <img src="${test.foto || 'assets/logo.png'}" class="w-24 h-24 rounded-full object-cover border-4 border-[#ce1126] shadow-2xl bg-black">
-                            </div>
-                            <i class="fas fa-quote-left text-4xl text-slate-800 mb-6"></i>
-                            <p class="text-xl md:text-2xl italic font-medium text-white mb-8 px-4">"${test.comentario}"</p>
-                            <h4 class="text-[#ce1126] font-black uppercase italic tracking-tighter text-lg">${test.nombre}</h4>
-                            <div class="flex justify-center gap-1 mt-2 text-yellow-500 text-xs">
-                                ${estrellasHtml}
+                            <div class="flex flex-col items-center">
+                                <div class="relative group inline-block">
+                                    <img src="${test.foto || 'assets/logo.png'}" 
+                                         class="max-h-[500px] md:max-h-[650px] w-auto mx-auto rounded-3xl border-2 border-slate-800 shadow-[0_0_60px_rgba(206,17,38,0.15)] group-hover:border-[#ce1126] transition-all duration-500 object-contain">
+                                    
+                                    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 bg-[#ce1126] text-white px-8 py-3 rounded-xl font-black italic uppercase tracking-widest shadow-2xl border-b-4 border-[#800b18] whitespace-nowrap">
+                                        ${test.nombre}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -143,7 +141,7 @@
                 iniciarCarrusel();
 
             } catch (error) {
-                console.error("Error Testimonios:", error);
+                console.error("Error Entregas:", error);
                 contenedor.innerHTML = '';
             }
         }
@@ -157,10 +155,9 @@
                 slides[currentSlide].classList.remove('active');
                 currentSlide = (currentSlide + 1) % slides.length;
                 slides[currentSlide].classList.add('active');
-            }, 5000);
+            }, 4000);
         }
 
-        // --- CARGAR INVENTARIO ---
         async function cargarInventario() {
             const contenedor = document.getElementById('lista-autos');
             try {
@@ -212,7 +209,6 @@
             }
         }
 
-        // Inicializar cargas
         cargarInventario();
         cargarTestimonios();
     </script>
