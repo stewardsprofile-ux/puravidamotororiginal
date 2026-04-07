@@ -2,7 +2,6 @@ backend:
   name: github
   repo: stewardsprofile-ux/puravidamotororiginal
   branch: main
-  # Mantenemos tu URL de Vercel intacta para no romper la conexión
   base_url: https://decap-cms-vercel-stewardsprofile-uxs-projects.vercel.app
   auth_endpoint: api/auth
 
@@ -34,3 +33,15 @@ collections:
         required: false
         fields:
           - { label: "Foto Extra", name: "foto", widget: "image" }
+
+  - name: "testimonios"
+    label: "Testimonios de Clientes"
+    folder: "assets/data/testimonios"
+    create: true
+    slug: "{{slug}}"
+    format: "json"
+    fields:
+      - { label: "Nombre del Cliente", name: "nombre", widget: "string" }
+      - { label: "Foto del Cliente", name: "foto", widget: "image" }
+      - { label: "Reseña / Comentario", name: "comentario", widget: "text" }
+      - { label: "Calificación", name: "estrellas", widget: "select", options: ["1", "2", "3", "4", "5"], default: "5" }
