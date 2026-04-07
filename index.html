@@ -47,7 +47,7 @@
     <section id="inventario" class="py-20 container mx-auto px-4">
         <div class="flex flex-col items-center mb-16">
             <h3 class="text-3xl font-black uppercase italic text-white tracking-widest border-l-8 border-[#ce1126] pl-4">
-                Inventario Disponible
+                Entrega Inmediata
             </h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" id="lista-autos">
@@ -102,7 +102,6 @@
                     const imagen = auto.imagen || 'assets/logo.png';
                     const idAuto = auto.id || 'detalle';
                     
-                    // Formatear precio a Moneda de Costa Rica (₡8.900.000)
                     const precioFormateado = new Intl.NumberFormat('es-CR', {
                         style: 'currency',
                         currency: 'CRC',
